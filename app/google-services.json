@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "302576636192",
+    "project_id": "dmi-timetable",
+    "storage_bucket": "dmi-timetable.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302576636192:android:22d12a8e5ec94073140745",
+        "android_client_info": {
+          "package_name": "com.example.dmitimetable"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMwYhYXgCaN0bKA_HSAjNxxprpvYS37fY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
