@@ -4,59 +4,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:accessibilityLiveRegion="polite"
     android:background="@android:color/holo_orange_light"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_gravity="start"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/dmi_logo_foreground"
-        tools:ignore="ContentDescription" />
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="67dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_launcher_background"
+        android:padding="16dp"
+        android:text="Logout" />
 
-    <TextView
-        android:layout_width="match_parent"
+    <!-- Logo/ImageView -->
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:src="@mipmap/dmi_logo_foreground"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Student Dashboard"
-        android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:layout_gravity="center"
         tools:ignore="HardcodedText" />
 
-        <Spinner
-            android:id="@+id/spinnerDepartments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
-        <Spinner
-            android:id="@+id/spinnerYear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <!-- Spinner Layout for Department, Year, and Semester -->
+    <Spinner
+        android:id="@+id/spinnerDepartments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
 
-        <Spinner
-            android:id="@+id/spinnerSemester"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/spinnerYear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
 
-        <Spinner
-            android:id="@+id/my_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/spinnerSemester"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
 
-        <TableLayout
-            android:id="@+id/timetableTable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/spinnerClassroom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" /> <!-- Added classroom spinner -->
 
-        <Button
-            android:id="@+id/buttonViewTimetable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="View Timetable"
-            tools:ignore="HardcodedText" />
+    <!-- Button to View Timetable -->
+    <Button
+        android:id="@+id/buttonViewTimetable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Timetable"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:layout_marginBottom="16dp"
+        tools:ignore="HardcodedText" />
 
-    </LinearLayout>
+    <!-- TableLayout to Display Timetable -->
+    <TableLayout
+        android:id="@+id/timetableTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="0, 1, 2, 3"
+        android:visibility="gone" />
+
+</LinearLayout>

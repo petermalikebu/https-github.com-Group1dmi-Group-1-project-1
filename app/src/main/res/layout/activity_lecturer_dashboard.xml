@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@android:color/holo_orange_light"> <!-- Add a background color -->
+    android:background="@android:color/holo_orange_light">
+
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="83dp"
+        android:layout_height="52dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_launcher_background"
+        android:padding="16dp"
+        android:text="Logout" />
 
     <!-- Logo/ImageView -->
     <ImageView
@@ -15,7 +26,7 @@
         android:layout_height="wrap_content"
         android:src="@mipmap/dmi_logo_foreground"
         android:layout_gravity="center"
-    android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp" />
 
     <!-- Title -->
     <TextView
@@ -25,47 +36,60 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_gravity="center"
-        tools:ignore="HardcodedText" />
+        android:textColor="@android:color/black" />
 
     <!-- Divider -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
-        android:layout_marginVertical="16dp" /> <!-- Space between title and buttons -->
+        android:layout_marginVertical="16dp" />
 
-    <!-- Button Card for Create Timetable -->
-    <androidx.cardview.widget.CardView
+    <!-- Spinner Layout for Department, Year, Semester, and Classroom -->
+    <Spinner
+        android:id="@+id/spinnerDepartments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="4dp"
-        app:cardBackgroundColor="@color/cardview_light_background"
-        app:cardCornerRadius="8dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp" />
 
-        <Button
-            android:id="@+id/buttonCreateTimetable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Create Timetable"
-            tools:ignore="HardcodedText" />
-
-    </androidx.cardview.widget.CardView>
-
-    <!-- Floating Action Button -->
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:id="@+id/spinnerYear"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="32dp" /> <!-- Margin from bottom to avoid overlap -->
+        android:layout_marginBottom="16dp" />
 
-    <!-- ProgressBar (Optional) -->
+    <Spinner
+        android:id="@+id/spinnerSemester"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
+
+    <Spinner
+        android:id="@+id/spinnerClassroom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/buttonViewTimetable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Timetable"
+        android:padding="16dp" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <!-- TableLayout for displaying timetable -->
+    <TableLayout
+        android:id="@+id/timetableTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:stretchColumns="0, 1, 2, 3, 4" />
+
 </LinearLayout>

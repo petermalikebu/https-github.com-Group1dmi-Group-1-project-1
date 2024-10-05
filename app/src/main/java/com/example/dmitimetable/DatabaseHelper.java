@@ -21,13 +21,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_DEPARTMENT = "department";
     private static final String COL_YEAR = "year";
     private static final String COL_SEMESTER = "semester";
+    private static final String COL_CLASSROOM = "classroom"; // Added classroom column
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 2); // Increment database version to 2
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // Updated table schema to include classroom
         String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_DATE + " TEXT, " +
@@ -36,14 +38,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_LECTURER + " TEXT, " +
                 COL_DEPARTMENT + " TEXT, " +
                 COL_YEAR + " TEXT, " +
-                COL_SEMESTER + " TEXT)";
+                COL_SEMESTER + " TEXT, " +
+                COL_CLASSROOM + " TEXT)"; // Added classroom to table schema
         db.execSQL(createTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);
+        // Upgrade the database by adding the classroom column if it doesn't exist
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL_CLASSROOM + " TEXT");
+        }
     }
 
     public boolean addTimetableEntry(TimetableEntry entry) {
@@ -56,6 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_DEPARTMENT, entry.getDepartment());
         contentValues.put(COL_YEAR, entry.getYear());
         contentValues.put(COL_SEMESTER, entry.getSemester());
+        contentValues.put(COL_CLASSROOM, entry.getClassroom()); // Add classroom value
 
         long result = db.insert(TABLE_NAME, null, contentValues);
         return result != -1; // Return true if insertion was successful
@@ -75,7 +81,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(COL_LECTURER)),
                         cursor.getString(cursor.getColumnIndex(COL_DEPARTMENT)),
                         cursor.getString(cursor.getColumnIndex(COL_YEAR)),
-                        cursor.getString(cursor.getColumnIndex(COL_SEMESTER))
+                        cursor.getString(cursor.getColumnIndex(COL_SEMESTER)),
+                        cursor.getString(cursor.getColumnIndex(COL_CLASSROOM)) // Retrieve classroom
                 );
                 entries.add(entry);
             } while (cursor.moveToNext());
@@ -84,9 +91,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return entries;
     }
 
-    public void deleteTimetableEntry(int id) {
+    public boolean deleteTimetableEntry(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, COL_ID + "=?", new String[]{String.valueOf(id)});
         db.close();
+        return true;
     }
 }

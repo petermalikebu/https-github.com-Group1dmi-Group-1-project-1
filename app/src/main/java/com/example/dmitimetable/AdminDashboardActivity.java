@@ -1,7 +1,9 @@
 package com.example.dmitimetable;
 
 import android.app.DatePickerDialog;
+import android.content.Intent; // Import Intent for logout
 import android.os.Bundle;
+import android.view.View; // Import View for button click
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +22,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     private Spinner departmentsSpinner, yearSpinner, semesterSpinner;
     private TableLayout timetableTable;
-    private EditText editTextDate, editTextTime, editTextModule, editTextLecturer;
+    private EditText editTextDate, editTextTime, editTextModule, editTextLecturer, editTextClassroom;
     private ArrayList<String> departments;
     private ArrayList<String> years;
     private ArrayList<String> semesters;
@@ -39,7 +41,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
         editTextTime = findViewById(R.id.editTextTime);
         editTextModule = findViewById(R.id.editTextModule);
         editTextLecturer = findViewById(R.id.editTextLecturer);
+        editTextClassroom = findViewById(R.id.editTextClassroom);
         Button buttonAdd = findViewById(R.id.buttonAdd);
+        Button buttonLogout = findViewById(R.id.buttonLogout); // Add logout button
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -82,6 +86,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         buttonAdd.setOnClickListener(v -> addTimetableEntry());
 
+        // Setup logout button click listener
+        buttonLogout.setOnClickListener(v -> logout());
+
         // Load existing entries from database
         displayTimetableEntries();
     }
@@ -108,9 +115,10 @@ public class AdminDashboardActivity extends AppCompatActivity {
         String department = departmentsSpinner.getSelectedItem().toString();
         String year = yearSpinner.getSelectedItem().toString();
         String semester = semesterSpinner.getSelectedItem().toString();
+        String classroom = editTextClassroom.getText().toString(); // Get classroom input
 
         // Validate inputs
-        if (date.isEmpty() || time.isEmpty() || module.isEmpty() || lecturer.isEmpty()) {
+        if (date.isEmpty() || time.isEmpty() || module.isEmpty() || lecturer.isEmpty() || classroom.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -120,7 +128,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
             return; // Time validation failed, exit method
         }
 
-        TimetableEntry entry = new TimetableEntry(date, time, module, lecturer, department, year, semester);
+        TimetableEntry entry = new TimetableEntry(date, time, module, lecturer, department, year, semester, classroom);
         if (databaseHelper.addTimetableEntry(entry)) {
             Toast.makeText(this, "Entry added", Toast.LENGTH_SHORT).show();
             displayTimetableEntries();
@@ -152,6 +160,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
             TextView departmentView = new TextView(this);
             TextView yearView = new TextView(this);
             TextView semesterView = new TextView(this);
+            TextView classroomView = new TextView(this);
             TextView deleteView = new TextView(this);
 
             dateView.setText(entry.getDate());
@@ -161,15 +170,16 @@ public class AdminDashboardActivity extends AppCompatActivity {
             departmentView.setText(entry.getDepartment());
             yearView.setText(entry.getYear());
             semesterView.setText(entry.getSemester());
+            classroomView.setText(entry.getClassroom());
 
-            // Add a delete option
+            // Add a delete action
             deleteView.setText("Delete");
             deleteView.setOnClickListener(v -> {
-                databaseHelper.deleteTimetableEntry(entry.getId());
-                displayTimetableEntries(); // Refresh the table
+                // Confirm before deleting
+                confirmDeleteEntry(entry.getId());
             });
 
-            // Add all TextViews to the row
+            // Add the TextViews to the row
             row.addView(dateView);
             row.addView(timeView);
             row.addView(moduleView);
@@ -177,10 +187,30 @@ public class AdminDashboardActivity extends AppCompatActivity {
             row.addView(departmentView);
             row.addView(yearView);
             row.addView(semesterView);
+            row.addView(classroomView);
             row.addView(deleteView);
 
-            // Add the row to the table
+            // Add the row to the timetable table
             timetableTable.addView(row);
         }
+    }
+
+    private void confirmDeleteEntry(int entryId) {
+        // Display confirmation dialog or Toast for deletion
+        if (databaseHelper.deleteTimetableEntry(entryId)) {
+            Toast.makeText(this, "Entry deleted", Toast.LENGTH_SHORT).show();
+            displayTimetableEntries(); // Refresh the timetable after deletion
+        } else {
+            Toast.makeText(this, "Error deleting entry", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void logout() {
+        // Clear user session or perform necessary logout operations
+        // For example, redirect to login activity
+        Intent intent = new Intent(AdminDashboardActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear activity stack
+        startActivity(intent);
+        finish(); // Close current activity
     }
 }

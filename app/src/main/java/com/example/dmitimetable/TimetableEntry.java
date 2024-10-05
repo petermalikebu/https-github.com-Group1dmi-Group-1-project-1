@@ -1,7 +1,7 @@
 package com.example.dmitimetable;
 
 public class TimetableEntry {
-    private int id; // Add an id field for database
+    private int id; // Add an id field for the database
     private final String date;
     private final String time;
     private final String module;
@@ -9,9 +9,10 @@ public class TimetableEntry {
     private final String department;
     private final String year;
     private final String semester;
+    private final String classroom; // New classroom field
 
     // Constructor without id
-    public TimetableEntry(String date, String time, String module, String lecturer, String department, String year, String semester) {
+    public TimetableEntry(String date, String time, String module, String lecturer, String department, String year, String semester, String classroom) {
         this.date = date;
         this.time = time;
         this.module = module;
@@ -19,10 +20,11 @@ public class TimetableEntry {
         this.department = department;
         this.year = year;
         this.semester = semester;
+        this.classroom = classroom; // Assign classroom
     }
 
     // Constructor with id
-    public TimetableEntry(int id, String date, String time, String module, String lecturer, String department, String year, String semester) {
+    public TimetableEntry(int id, String date, String time, String module, String lecturer, String department, String year, String semester, String classroom) {
         this.id = id;
         this.date = date;
         this.time = time;
@@ -31,6 +33,7 @@ public class TimetableEntry {
         this.department = department;
         this.year = year;
         this.semester = semester;
+        this.classroom = classroom; // Assign classroom
     }
 
     // Getters and Setters
@@ -42,4 +45,5 @@ public class TimetableEntry {
     public String getDepartment() { return department; }
     public String getYear() { return year; }
     public String getSemester() { return semester; }
+    public String getClassroom() { return classroom; } // Getter for classroom
 }

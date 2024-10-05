@@ -2,9 +2,11 @@ package com.example.dmitimetable;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;  // Import ProgressBar
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText confirmPasswordEditText;
     private Spinner roleSpinner;
     private Button registerButton;
+    private ProgressBar progressBar; // Add ProgressBar reference
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPasswordEditText = findViewById(R.id.editTextConfirmPassword);
         roleSpinner = findViewById(R.id.spinnerRole);
         registerButton = findViewById(R.id.buttonRegister);
+        progressBar = findViewById(R.id.progressBar); // Initialize ProgressBar
 
         // Populate the spinner with roles
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -65,9 +69,12 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Validate inputs
         if (validateInputs(id, email, password, confirmPassword, role)) {
+            progressBar.setVisibility(View.VISIBLE);  // Show ProgressBar
+
             // Create user with Firebase Authentication
             auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
+                        progressBar.setVisibility(View.GONE);  // Hide ProgressBar
                         if (task.isSuccessful()) {
                             saveUserToDatabase(id, email, role);
                         } else {

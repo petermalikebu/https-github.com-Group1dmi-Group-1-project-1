@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class SplashActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
-    private TextView splashText; // Declare splashText variable
+    private TextView splashText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,9 @@ public class SplashActivity extends AppCompatActivity {
 
         // Initialize splash text view
         splashText = findViewById(R.id.splashText);
+        if (splashText == null) {
+            throw new RuntimeException("Unable to find TextView with ID splashText");
+        }
 
         // Set up animations
         setUpAnimations();
@@ -38,8 +41,8 @@ public class SplashActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
-            finish();
-        }, 2000); // 2000 milliseconds = 2 seconds
+            finish(); // Ensure we finish the splash activity
+        }, 2000);
     }
 
     private void setUpAnimations() {
