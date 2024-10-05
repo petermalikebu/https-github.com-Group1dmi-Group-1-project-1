@@ -1,0 +1,5 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <item name="progressBar" type="id" />
+    <item name="buttonViewStudents" type="id" />
+    <item name="my_spinner" type="id" />
+</resources>
