@@ -35,8 +35,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_gravity="center"
-        tools:ignore="HardcodedText" />
-
+        android:textColor="@android:color/black" />
 
     <!-- Spinner Layout for Department, Year, and Semester -->
     <Spinner
@@ -57,12 +56,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp" />
 
-    <Spinner
-        android:id="@+id/spinnerClassroom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp" /> <!-- Added classroom spinner -->
-
     <!-- Button to View Timetable -->
     <Button
         android:id="@+id/buttonViewTimetable"
@@ -71,15 +64,57 @@
         android:text="View Timetable"
         android:textColor="@android:color/white"
         android:backgroundTint="@android:color/holo_blue_dark"
-        android:layout_marginBottom="16dp"
-        tools:ignore="HardcodedText" />
+        android:layout_marginBottom="16dp" />
 
     <!-- TableLayout to Display Timetable -->
     <TableLayout
         android:id="@+id/timetableTable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="0, 1, 2, 3"
-        android:visibility="gone" />
+        android:stretchColumns="0, 1, 2, 3, 4, 5"
+        android:visibility="gone"
+        android:background="@android:color/white">
+
+        <!-- Table Header Row -->
+        <TableRow
+            android:background="@android:color/holo_blue_dark"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Date"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Time"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Module"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Lecturer"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Classroom"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
 
 </LinearLayout>

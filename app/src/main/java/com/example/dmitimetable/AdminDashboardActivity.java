@@ -1,15 +1,15 @@
 package com.example.dmitimetable;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.Intent; // Import Intent for logout
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View; // Import View for button click
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,11 +28,15 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private ArrayList<String> semesters;
     private DatabaseHelper databaseHelper;
 
+    // Define classroom list
+    private ArrayList<String> classrooms;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
 
+        // Initialize UI components
         departmentsSpinner = findViewById(R.id.spinnerDepartments);
         yearSpinner = findViewById(R.id.spinnerYear);
         semesterSpinner = findViewById(R.id.spinnerSemester);
@@ -46,6 +50,13 @@ public class AdminDashboardActivity extends AppCompatActivity {
         Button buttonLogout = findViewById(R.id.buttonLogout); // Add logout button
 
         databaseHelper = new DatabaseHelper(this);
+        classrooms = new ArrayList<>();
+
+        // Populate classrooms
+        classrooms.add("Room 101");
+        classrooms.add("Room 102");
+        classrooms.add("Room 103");
+        classrooms.add("Room 201");
 
         departments = new ArrayList<>();
         years = new ArrayList<>();
@@ -152,7 +163,10 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         ArrayList<TimetableEntry> entries = databaseHelper.getAllTimetableEntries();
         for (TimetableEntry entry : entries) {
-            TableRow row = new TableRow(this);
+            // Create a new vertical layout for each entry
+            TableLayout entryLayout = new TableLayout(this);
+
+            // Create TextViews for each field
             TextView dateView = new TextView(this);
             TextView timeView = new TextView(this);
             TextView moduleView = new TextView(this);
@@ -161,56 +175,60 @@ public class AdminDashboardActivity extends AppCompatActivity {
             TextView yearView = new TextView(this);
             TextView semesterView = new TextView(this);
             TextView classroomView = new TextView(this);
-            TextView deleteView = new TextView(this);
+            Button deleteButton = new Button(this);
 
-            dateView.setText(entry.getDate());
-            timeView.setText(entry.getTime());
-            moduleView.setText(entry.getModule());
-            lecturerView.setText(entry.getLecturer());
-            departmentView.setText(entry.getDepartment());
-            yearView.setText(entry.getYear());
-            semesterView.setText(entry.getSemester());
-            classroomView.setText(entry.getClassroom());
+            // Set the text for each TextView
+            dateView.setText("Date: " + entry.getDate());
+            timeView.setText("Time: " + entry.getTime());
+            moduleView.setText("Module Code: " + entry.getModule());
+            lecturerView.setText("Lecturer: " + entry.getLecturer());
+            departmentView.setText("Department: " + entry.getDepartment());
+            yearView.setText("Year: " + entry.getYear());
+            semesterView.setText("Semester: " + entry.getSemester());
+            classroomView.setText("Classroom: " + entry.getClassroom());
 
-            // Add a delete action
-            deleteView.setText("Delete");
-            deleteView.setOnClickListener(v -> {
-                // Confirm before deleting
-                confirmDeleteEntry(entry.getId());
-            });
+            // Set the delete button text and action
+            deleteButton.setText("Delete");
+            deleteButton.setOnClickListener(v -> confirmDeleteEntry(entry.getId()));
 
-            // Add the TextViews to the row
-            row.addView(dateView);
-            row.addView(timeView);
-            row.addView(moduleView);
-            row.addView(lecturerView);
-            row.addView(departmentView);
-            row.addView(yearView);
-            row.addView(semesterView);
-            row.addView(classroomView);
-            row.addView(deleteView);
+            // Add all TextViews and the delete button to the entry layout
+            entryLayout.addView(dateView);
+            entryLayout.addView(timeView);
+            entryLayout.addView(moduleView);
+            entryLayout.addView(lecturerView);
+            entryLayout.addView(departmentView);
+            entryLayout.addView(yearView);
+            entryLayout.addView(semesterView);
+            entryLayout.addView(classroomView);
+            entryLayout.addView(deleteButton); // Add delete button for each entry
 
-            // Add the row to the timetable table
-            timetableTable.addView(row);
+            // Add the entry layout to the main timetable table
+            timetableTable.addView(entryLayout);
         }
     }
 
     private void confirmDeleteEntry(int entryId) {
-        // Display confirmation dialog or Toast for deletion
-        if (databaseHelper.deleteTimetableEntry(entryId)) {
-            Toast.makeText(this, "Entry deleted", Toast.LENGTH_SHORT).show();
-            displayTimetableEntries(); // Refresh the timetable after deletion
-        } else {
-            Toast.makeText(this, "Error deleting entry", Toast.LENGTH_SHORT).show();
-        }
+        // Display confirmation dialog for deletion
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Entry")
+                .setMessage("Are you sure you want to delete this entry?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    if (databaseHelper.deleteTimetableEntry(entryId)) {
+                        Toast.makeText(this, "Entry deleted", Toast.LENGTH_SHORT).show();
+                        displayTimetableEntries(); // Refresh the timetable after deletion
+                    } else {
+                        Toast.makeText(this, "Error deleting entry", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     private void logout() {
         // Clear user session or perform necessary logout operations
         // For example, redirect to login activity
         Intent intent = new Intent(AdminDashboardActivity.this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear activity stack
         startActivity(intent);
-        finish(); // Close current activity
+        finish(); // Close the current activity
     }
 }

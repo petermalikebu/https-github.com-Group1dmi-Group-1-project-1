@@ -13,6 +13,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "timetable.db";
     private static final String TABLE_NAME = "timetable";
+
+    // Column names
     private static final String COL_ID = "id";
     private static final String COL_DATE = "date";
     private static final String COL_TIME = "time";
@@ -64,6 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_CLASSROOM, entry.getClassroom()); // Add classroom value
 
         long result = db.insert(TABLE_NAME, null, contentValues);
+        db.close(); // Close the database connection
         return result != -1; // Return true if insertion was successful
     }
 
@@ -74,7 +77,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                @SuppressLint("Range") TimetableEntry entry = new TimetableEntry(
+                @SuppressLint("Range")
+                TimetableEntry entry = new TimetableEntry(
                         cursor.getString(cursor.getColumnIndex(COL_DATE)),
                         cursor.getString(cursor.getColumnIndex(COL_TIME)),
                         cursor.getString(cursor.getColumnIndex(COL_MODULE)),
@@ -88,13 +92,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close(); // Close the database connection
         return entries;
     }
 
     public boolean deleteTimetableEntry(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, COL_ID + "=?", new String[]{String.valueOf(id)});
-        db.close();
-        return true;
+        int rowsDeleted = db.delete(TABLE_NAME, COL_ID + "=?", new String[]{String.valueOf(id)});
+        db.close(); // Close the database connection
+        return rowsDeleted > 0; // Return true if deletion was successful
     }
 }

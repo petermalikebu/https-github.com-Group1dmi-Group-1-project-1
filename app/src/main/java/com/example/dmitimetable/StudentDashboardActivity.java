@@ -1,6 +1,6 @@
 package com.example.dmitimetable;
 
-import android.content.Intent; // Import Intent class
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,42 +17,37 @@ import java.util.ArrayList;
 
 public class StudentDashboardActivity extends AppCompatActivity {
 
-    private Spinner departmentsSpinner, yearSpinner, semesterSpinner, classroomSpinner;
+    private Spinner departmentsSpinner, yearSpinner, semesterSpinner;
     private TableLayout timetableTable;
     private ArrayList<TimetableEntry> timetableEntries;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_dashboard);
 
-        // Initialize Spinners and TableLayout
+        // Initialize UI components
         departmentsSpinner = findViewById(R.id.spinnerDepartments);
         yearSpinner = findViewById(R.id.spinnerYear);
         semesterSpinner = findViewById(R.id.spinnerSemester);
-        classroomSpinner = findViewById(R.id.spinnerClassroom);
         timetableTable = findViewById(R.id.timetableTable);
         Button viewTimetableButton = findViewById(R.id.buttonViewTimetable);
-        Button logoutButton = findViewById(R.id.buttonLogout); // Initialize Logout button
+        Button logoutButton = findViewById(R.id.buttonLogout);
 
         timetableEntries = new ArrayList<>();
+        databaseHelper = new DatabaseHelper(this);
+
         setupSpinners();
 
         viewTimetableButton.setOnClickListener(v -> displayFilteredTimetable());
 
-        // Set Logout button functionality
+        // Logout button functionality
         logoutButton.setOnClickListener(v -> {
-            // Optionally, clear user session data or authentication token here
-
-            // Notify user of successful logout
             Toast.makeText(StudentDashboardActivity.this, "Logged out successfully!", Toast.LENGTH_SHORT).show();
-
-            // Create an Intent to navigate back to the LoginActivity
             Intent intent = new Intent(StudentDashboardActivity.this, LoginActivity.class);
             startActivity(intent);
-
-            // Finish this activity
-            finish(); // This will close the current activity
+            finish();
         });
     }
 
@@ -74,13 +69,6 @@ public class StudentDashboardActivity extends AppCompatActivity {
         semesters.add("First Semester");
         semesters.add("Second Semester");
 
-        ArrayList<String> classrooms = new ArrayList<>();
-        classrooms.add("Room 101");
-        classrooms.add("Room 102");
-        classrooms.add("Room 103");
-        classrooms.add("Room 201");
-
-        // Set up adapters for the spinners
         ArrayAdapter<String> departmentAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, departments);
         departmentsSpinner.setAdapter(departmentAdapter);
 
@@ -89,25 +77,21 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
         ArrayAdapter<String> semesterAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, semesters);
         semesterSpinner.setAdapter(semesterAdapter);
-
-        ArrayAdapter<String> classroomAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, classrooms);
-        classroomSpinner.setAdapter(classroomAdapter);
     }
 
     private void displayFilteredTimetable() {
         timetableTable.removeAllViews(); // Clear previous rows
 
-        // Check for valid selections
-        if (departmentsSpinner.getSelectedItem() == null || yearSpinner.getSelectedItem() == null ||
-                semesterSpinner.getSelectedItem() == null || classroomSpinner.getSelectedItem() == null) {
+        if (departmentsSpinner.getSelectedItem() == null || yearSpinner.getSelectedItem() == null || semesterSpinner.getSelectedItem() == null) {
             Toast.makeText(this, "Please select all fields.", Toast.LENGTH_SHORT).show();
-            return; // Early exit if any spinner is not selected
+            return;
         }
 
         String selectedDepartment = departmentsSpinner.getSelectedItem().toString();
         String selectedYear = yearSpinner.getSelectedItem().toString();
         String selectedSemester = semesterSpinner.getSelectedItem().toString();
-        String selectedClassroom = classroomSpinner.getSelectedItem().toString();
+
+        timetableEntries = databaseHelper.getAllTimetableEntries();
 
         // Add headers
         TableRow headerRow = new TableRow(this);
@@ -118,13 +102,12 @@ public class StudentDashboardActivity extends AppCompatActivity {
         headerRow.addView(createTextView("Classroom"));
         timetableTable.addView(headerRow);
 
-        // Filter and add timetable entries
+        // Filter and add timetable entries based on selected criteria
         boolean hasEntries = false;
         for (TimetableEntry entry : timetableEntries) {
             if (entry.getDepartment().equals(selectedDepartment)
                     && entry.getYear().equals(selectedYear)
-                    && entry.getSemester().equals(selectedSemester)
-                    && entry.getClassroom().equals(selectedClassroom)) {
+                    && entry.getSemester().equals(selectedSemester)) {
 
                 hasEntries = true;
                 TableRow row = new TableRow(this);
@@ -132,13 +115,16 @@ public class StudentDashboardActivity extends AppCompatActivity {
                 row.addView(createTextView(entry.getTime()));
                 row.addView(createTextView(entry.getModule()));
                 row.addView(createTextView(entry.getLecturer()));
-                row.addView(createTextView(entry.getClassroom()));
+                row.addView(createTextView(entry.getClassroom())); // Add classroom in displayed data
                 timetableTable.addView(row);
             }
         }
 
-        if (!hasEntries) {
-            Toast.makeText(this, "No entries found for the selected criteria.", Toast.LENGTH_SHORT).show();
+        if (hasEntries) {
+            timetableTable.setVisibility(View.VISIBLE); // Show timetable if entries are available
+        } else {
+            timetableTable.setVisibility(View.GONE); // Hide timetable and show a message
+            Toast.makeText(this, "No timetable entries found for the selected criteria.", Toast.LENGTH_SHORT).show();
         }
     }
 
