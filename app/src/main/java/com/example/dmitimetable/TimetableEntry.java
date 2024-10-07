@@ -1,7 +1,7 @@
 package com.example.dmitimetable;
 
 public class TimetableEntry {
-    private int id; // Add an id field for the database
+    private int id; // ID field for the database
     private final String date;
     private final String time;
     private final String module;
@@ -9,9 +9,9 @@ public class TimetableEntry {
     private final String department;
     private final String year;
     private final String semester;
-    private final String classroom; // New classroom field
+    private final String classroom; // Classroom field
 
-    // Constructor without id
+    // Constructor without id (for creating new entries)
     public TimetableEntry(String date, String time, String module, String lecturer, String department, String year, String semester, String classroom) {
         this.date = date;
         this.time = time;
@@ -23,9 +23,9 @@ public class TimetableEntry {
         this.classroom = classroom; // Assign classroom
     }
 
-    // Constructor with id
+    // Constructor with id (for retrieving entries from the database)
     public TimetableEntry(int id, String date, String time, String module, String lecturer, String department, String year, String semester, String classroom) {
-        this.id = id;
+        this.id = id; // Initialize ID
         this.date = date;
         this.time = time;
         this.module = module;
@@ -36,8 +36,8 @@ public class TimetableEntry {
         this.classroom = classroom; // Assign classroom
     }
 
-    // Getters and Setters
-    public int getId() { return id; }
+    // Getters
+    public int getId() { return id; } // Getter for ID
     public String getDate() { return date; }
     public String getTime() { return time; }
     public String getModule() { return module; }

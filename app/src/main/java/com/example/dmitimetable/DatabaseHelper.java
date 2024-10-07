@@ -55,6 +55,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean addTimetableEntry(TimetableEntry entry) {
+        // Check for conflicts before adding a new entry
+        if (hasConflict(entry.getDate(), entry.getTime(), entry.getLecturer(), entry.getClassroom())) {
+            Log.d("DatabaseHelper", "Conflict found for entry: " + entry);
+            return false; // Conflict detected
+        }
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_DATE, entry.getDate());
@@ -69,6 +75,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_NAME, null, contentValues);
         db.close(); // Close the database connection
         return result != -1; // Return true if insertion was successful
+    }
+
+    public boolean hasConflict(String date, String time, String lecturer, String classroom) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME +
+                " WHERE date = ? AND time = ? AND (lecturer = ? OR classroom = ?)";
+        Cursor cursor = db.rawQuery(query, new String[]{date, time, lecturer, classroom});
+        boolean conflictFound = false;
+        if (cursor.moveToFirst()) {
+            int count = cursor.getInt(0);
+            conflictFound = (count > 0); // If there's 1 or more entries, there is a conflict
+        }
+        cursor.close();
+        return conflictFound;
     }
 
     public ArrayList<TimetableEntry> getAllTimetableEntries() {
