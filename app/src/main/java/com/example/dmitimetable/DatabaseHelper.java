@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log; // Import for logging
 
 import java.util.ArrayList;
 
@@ -79,6 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 @SuppressLint("Range")
                 TimetableEntry entry = new TimetableEntry(
+                        cursor.getInt(cursor.getColumnIndex(COL_ID)), // Get ID from cursor
                         cursor.getString(cursor.getColumnIndex(COL_DATE)),
                         cursor.getString(cursor.getColumnIndex(COL_TIME)),
                         cursor.getString(cursor.getColumnIndex(COL_MODULE)),
@@ -98,8 +100,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean deleteTimetableEntry(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
+        // Log the id before deletion
+        Log.d("DatabaseHelper", "Deleting entry with ID: " + id);
         int rowsDeleted = db.delete(TABLE_NAME, COL_ID + "=?", new String[]{String.valueOf(id)});
         db.close(); // Close the database connection
+        // Log the result of deletion
+        Log.d("DatabaseHelper", "Rows deleted: " + rowsDeleted);
         return rowsDeleted > 0; // Return true if deletion was successful
     }
 }
