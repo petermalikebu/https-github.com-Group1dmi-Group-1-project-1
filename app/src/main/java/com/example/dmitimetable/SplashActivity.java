@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,15 +49,22 @@ public class SplashActivity extends AppCompatActivity {
     private void setUpAnimations() {
         // Load animations
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        Animation zoomIn = AnimationUtils.loadAnimation(this, R.anim.zoom_in); // Add zoom-in for logo
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
 
-        // Combine animations
-        AnimationSet animationSet = new AnimationSet(true);
-        animationSet.addAnimation(fadeIn);
-        animationSet.addAnimation(slideUp);
-        animationSet.setDuration(1000); // Duration of the combined animation
+        // Combine text animations
+        AnimationSet textAnimationSet = new AnimationSet(true);
+        textAnimationSet.addAnimation(fadeIn);
+        textAnimationSet.addAnimation(slideUp);
+        textAnimationSet.setDuration(1000);
 
-        // Start the animation
-        splashText.startAnimation(animationSet);
+        // Set up logo animation
+        ImageView imageView = findViewById(R.id.imageView);
+        if (imageView != null) {
+            imageView.startAnimation(zoomIn); // Start zoom-in animation for the logo
+        }
+
+        // Start text animation
+        splashText.startAnimation(textAnimationSet);
     }
 }

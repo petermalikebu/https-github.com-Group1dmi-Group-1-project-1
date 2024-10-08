@@ -2,31 +2,42 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_orange_light">
+    android:background="@drawable/gradient_background"> <!-- Use a custom gradient drawable -->
 
+    <!-- Animated Logo -->
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="8dp"
-        app:srcCompat="@mipmap/dmi_logo_foreground"
-        android:adjustViewBounds="true"
-        android:scaleType="centerInside" />
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/dmi_logo_foreground"
+        android:scaleType="centerInside"
+        android:layout_marginBottom="16dp"/>
 
+    <!-- Progress Bar (optional) -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imageView"
+        android:layout_marginTop="16dp"
+        android:indeterminate="true"
+        style="?android:attr/progressBarStyleHorizontal"/>
+
+    <!-- Splash Text with Animation -->
     <TextView
         android:id="@+id/splashText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imageView"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:text="@string/welcome_to_the_dmi_timetable"
         android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:layout_marginBottom="32dp" /> <!-- Use dp for bottom margin -->
-
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        android:layout_marginBottom="32dp"
+        android:alpha="0" /> <!-- Start with hidden text -->
 </RelativeLayout>
