@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/holo_orange_light"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="83dp"
+        android:layout_height="52dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_launcher_background"
+        android:padding="16dp"
+        android:text="Logout" />
+
+
+    <!-- Date Input -->
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/dmi_logo_foreground" />
+
+    <EditText
+        android:id="@+id/editTextDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Date"
+        android:inputType="date" />
+
+    <!-- Time Input -->
+    <EditText
+        android:id="@+id/editTextTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter time (HH:mm-HH:mm)"
+        android:inputType="text"
+        android:imeOptions="actionDone" />
+
+
+    <!-- Module Input -->
+    <EditText
+        android:id="@+id/editTextModule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Module" />
+
+    <!-- Lecturer Input -->
+    <EditText
+        android:id="@+id/editTextLecturer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Lecturer Name" />
+
+    <EditText
+        android:id="@+id/editTextClassroom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Classroom" />
+
+    <!-- Add this to the same section where editTextDate, editTextTime, editTextModule, etc., are located -->
+
+
+    <!-- Department Spinner -->
+    <Spinner
+        android:id="@+id/spinnerDepartments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/spinnerYear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerDepartments"
+        android:layout_marginTop="16dp"
+        tools:ignore="ObsoleteLayoutParam" />
+
+    <Spinner
+        android:id="@+id/spinnerSemester"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerYear"
+        android:layout_marginTop="16dp"
+        tools:ignore="ObsoleteLayoutParam" />
+
+
+    <!-- Add Button -->
+    <Button
+        android:id="@+id/buttonAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Entry" />
+
+    <!-- Table Layout to Display Timetable Entries -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+        <TableLayout
+            android:id="@+id/timetableTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1"
+            android:padding="8dp"
+            android:background="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:shrinkColumns="*"
+            android:divider="@android:color/darker_gray"
+            android:showDividers="middle">
+
+            <!-- Table headers -->
+            <TableRow>
+                <TextView
+                    android:text="Date"
+                    android:textStyle="bold"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:text="Time"
+                    android:textStyle="bold"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:text="Module"
+                    android:textStyle="bold"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:text="Lecturer"
+                    android:textStyle="bold"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:text="Department"
+                    android:textStyle="bold"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:text="Action"
+                    android:textStyle="bold"
+                    android:padding="10dp" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+
+</LinearLayout>

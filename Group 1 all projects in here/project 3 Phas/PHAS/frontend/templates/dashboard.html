@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="text-center mb-4">Your Dashboard</h2>
+<div class="container">
+    <h4>Health Data</h4>
+    <ul id="health-data-list"></ul>
+    <h4 class="mt-4">Health Predictions</h4>
+    <p id="prediction"></p>
+</div>
+
+<script>
+    // Fetch and display health data
+    fetch('/get_health_data')  // Endpoint should be defined on the backend to return health data
+        .then(response => response.json())
+        .then(data => {
+            const list = document.getElementById('health-data-list');
+            data.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.metric_name}: ${item.value}`;
+                list.appendChild(li);
+            });
+        });
+
+    // Fetch predictions
+    fetch('/get_predictions')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('prediction').innerText = data.prediction;
+        });
+</script>
+{% endblock %}

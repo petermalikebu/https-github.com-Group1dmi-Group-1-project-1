@@ -1,0 +1,27 @@
+<!-- frontend/templates/predict_dashboard.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="prediction-container">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Health Risk Prediction</h2 ```html
+            <form method="POST" action="{{ url_for('predict_health') }}">
+                <div class="form-group">
+                    <label for="heart_rate">Heart Rate:</label>
+                    <input type="number" id="heart_rate" name="heart_rate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="glucose_level">Glucose Level:</label>
+                    <input type="number" id="glucose_level" name="glucose_level" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="bp_level">Blood Pressure Level:</label>
+                    <input type="number" id="bp_level" name="bp_level" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Predict Health Risk</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

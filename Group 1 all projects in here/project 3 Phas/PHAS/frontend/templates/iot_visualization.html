@@ -1,0 +1,13 @@
+<!-- frontend/templates/iot_visualization.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="visualization-container">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">IoT Data Visualization</h2>
+            <img src="{{ url_for('static', filename='images/iot_visualization.png') }}" alt="IoT Data Visualization" class="img-fluid">
+        </div>
+    </div>
+</section>
+{% endblock %}
