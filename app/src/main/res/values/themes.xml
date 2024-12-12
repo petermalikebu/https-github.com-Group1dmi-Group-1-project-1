@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--suppress ALL -->
-<resources>
-    <style name="Theme.DMITimetable" parent="android:Theme.Material.Light.NoActionBar" />
-    <style name="Theme.DMITimetable.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
-    </style>
-</resources>
